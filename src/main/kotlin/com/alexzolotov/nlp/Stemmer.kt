@@ -19,9 +19,9 @@ class Stemmer {
         }
     }
 
-    fun step1(word: String) = step1c(step1b(step1a(word)))
+    internal fun step1(word: String) = step1c(step1b(step1a(word)))
 
-    fun step1a(word: String) = when {
+    internal fun step1a(word: String) = when {
         word.endsWith("sses") -> word.replaceEnd("sses", "ss")
         word.endsWith("ies") -> word.withoutPostfix(2)
         word.endsWith("ss") -> word
@@ -29,7 +29,7 @@ class Stemmer {
         else -> word
     }
 
-    fun step1b(word: String): String {
+    internal fun step1b(word: String): String {
         return if (word.endsWith("eed")) {
             if (m(word.withoutPostfix("eed")) > 0) {
                 word.withoutPostfix(1)
@@ -62,11 +62,11 @@ class Stemmer {
         }
     }
 
-    fun step1c(word: String): String {
+    internal fun step1c(word: String): String {
         return if (word.endsWith("y") && word.withoutPostfix("y").containsVowel()) word.replaceEnd("y", "i") else word
     }
 
-    fun step2(word: String) = when {
+    internal fun step2(word: String) = when {
         word.endsWith("ational") -> word.replaceEnd("ational", "ate", 0)
         word.endsWith("tional") -> word.replaceEnd("tional", "tion", 0)
         word.endsWith("enci") -> word.replaceEnd("enci", "ence", 0)
@@ -91,7 +91,7 @@ class Stemmer {
         else -> word
     }
 
-    fun step3(word: String) = when {
+    internal fun step3(word: String) = when {
         word.endsWith("icate") -> word.replaceEnd("icate", "ic", 0)
         word.endsWith("ative") -> word.withoutPostfix("ative", 0)
         word.endsWith("alize") -> word.replaceEnd("alize", "al", 0)
@@ -102,7 +102,7 @@ class Stemmer {
         else -> word
     }
 
-    fun step4(word: String) = when {
+    internal fun step4(word: String) = when {
         word.endsWith("al") -> word.withoutPostfix("al", 1)
         word.endsWith("ance") -> word.withoutPostfix("ance", 1)
         word.endsWith("ence") -> word.withoutPostfix("ence", 1)
@@ -126,9 +126,9 @@ class Stemmer {
         else -> word
     }
 
-    fun step5(word: String) = step5b(step5a(word))
+    internal fun step5(word: String) = step5b(step5a(word))
 
-    fun step5a(word: String): String {
+    internal fun step5a(word: String): String {
         if (word.endsWith("e")) {
             val wordWithoutE = word.withoutPostfix("e")
             val m = m(wordWithoutE)
@@ -139,9 +139,9 @@ class Stemmer {
         return word
     }
 
-    fun step5b(word: String) = if (word.endsWith("ll") && m(word) > 1) word.withoutPostfix("l") else word
+    internal fun step5b(word: String) = if (word.endsWith("ll") && m(word) > 1) word.withoutPostfix("l") else word
 
-    fun m(word: String): Int {
+    internal fun m(word: String): Int {
         val wordWithoutTrailingConsonants = word.replaceFirst(Regex("^${CONSONANT}+"), "")
         return M_REGEX.findAll(wordWithoutTrailingConsonants).count()
     }
